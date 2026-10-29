@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# Xiaomi Azkar Bot - مصنع فيديوهات أذكار أوتوماتيك حلال
+DATE=$(date +%Y%m%d_%H%M%S)
+TEXTS=("سبحان الله وبحمده" "الحمد لله كثيرا" "لا اله الا الله" "الله اكبر كبيرا" "استغفر الله العظيم" "اللهم ارزقني الزوجة الصالحة" "اللهم بارك لي في رزقي")
+RAND_TEXT=${TEXTS[$RANDOM % ${#TEXTS[@]}]}
+
+# فيديو HD 1080x1920 بجودة عالية
+ffmpeg -y -f lavfi -i color=c=#0a0a0a:s=1080x1920:d=12:r=30 -f lavfi -i anullsrc=r=44100:cl=stereo -vf "drawtext=fontfile=/system/fonts/NotoNaskhArabic-Bold.ttf:text='$RAND_TEXT':fontcolor=#FFD700:fontsize=90:borderw=3:bordercolor=black:x=(w-text_w)/2:y=(h-text_h)/2-100,drawtext=fontfile=/system/fonts/NotoNaskhArabic-Regular.ttf:text='اذكر الله':fontcolor=white:fontsize=60:x=(w-text_w)/2:y=(h-text_h)/2+150" -c:v libx264 -preset ultrafast -crf 23 -c:a aac -b:a 128k -shortest ~/azkar/video_$DATE.mp4
+
+cp ~/azkar/video_$DATE.mp4 ~/storage/downloads/
+echo "✅ HD فيديو عالي الجودة: video_$DATE.mp4 - $RAND_TEXT"
+# am start -n com.zhiliaoapp.musically/com.ss.android.ugc.aweme.main.MainActivity
